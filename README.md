@@ -1,2 +1,2 @@
 # MyersRealm
-A complexed text-based RPG.
+A complex text-based RPG.
