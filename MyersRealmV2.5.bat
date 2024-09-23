@@ -5536,38 +5536,7 @@ ping localhost -n 2 >nul
 goto ATK_STR
 
 :ATK_STR
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -5717,39 +5686,7 @@ ping localhost -n 2 >nul
 goto ATK_STR_3
 
 :ATK_STR_3
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -5927,36 +5864,7 @@ goto FS_STR_3
 
 :FS_STR_3
 if %npctype% EQU Belabond set /a dmgnpc=%random%*45/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a damage=%damage%-10
-if %dmgnpc% LEQ 0 set /a dmgnpc=0
+
 cls
 echo.
 echo.                                                         
@@ -6142,39 +6050,7 @@ ping localhost -n 2 >nul
 goto ATK_STR_32
 
 :ATK_STR_32
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -6693,37 +6569,7 @@ if %atkcho% EQU 2 goto fightinginventory
 if %atkcho% EQU 3 goto flee
 
 :atk
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*680/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*710/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*720/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*730/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*740/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*750/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*750/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -6803,36 +6649,7 @@ if %npctype% EQU Rocktor set /a dmgnpc=%random%*240/32767+1
 if %npctype% EQU Ent set /a dmgnpc=%random%*300/32767+1
 if %npctype% EQU thief set /a dmgnpc=%random%*330/32767+1
 if %npctype% EQU Elemental set /a dmgnpc=%random%*360/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a dmgnpc=%dmgnpc%-15
-if %dmgnpc% LEQ 1 set /a dmgnpc=1
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -9944,36 +9761,7 @@ goto sfs3
 
 :sfs3
 set /a dmgnpc=%random%*110/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a dmgnpc=%dmgnpc%-15
-if %dmgnpc% LEQ 1 set /a dmgnpc=1
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -10189,37 +9977,7 @@ if %atkcho% EQU 3 goto hflee
 goto hfs1
 
 :hatk
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*680/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*710/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*720/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*730/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*740/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*750/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*750/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -10332,36 +10090,7 @@ if %npctype% EQU Sleeper set /a dmgnpc=%random%*240/32767+1
 if %npctype% EQU Craw set /a dmgnpc=%random%*300/32767+1
 if %npctype% EQU Magmug set /a dmgnpc=%random%*330/32767+1
 if %npctype% EQU Devil's Mutt set /a dmgnpc=%random%*360/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a dmgnpc=%dmgnpc%-15
-if %dmgnpc% LEQ 1 set /a dmgnpc=1
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -10682,38 +10411,7 @@ ping localhost -n 2 >nul
 goto hATK_STR_3
 
 :hATK_STR_3
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
+call :set_damage
 if %damage% GTR %health% set /a damage=%health%
 cls
 echo.
@@ -10867,36 +10565,7 @@ goto hbfightinginventory
 
 :hFS_STR_3
 set /a dmgnpc=%random%*600/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a dmgnpc=%dmgnpc%-15
-if %dmgnpc% LEQ 0 set /a dmgnpc=1
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -11864,39 +11533,7 @@ ping localhost -n 2 >nul
 goto fmATK_STR
 
 :fmATK_STR
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -11950,34 +11587,7 @@ goto fmFS3_STR
 
 :fmFS3_STR
 set /a dmgnpc=%random%*30/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %dmgnpc% LEQ 0 set /a dmgnpc=0
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -12263,36 +11873,7 @@ goto csfs3
 
 :csfs3
 set /a dmgnpc=%random%*110/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
-if %class% EQU Brute set /a dmgnpc=%dmgnpc%-15
-if %dmgnpc% LEQ 1 set /a dmgnpc=1
+call :determine_defense dmgnpc
 cls
 echo.
 echo.                                                         
@@ -12772,39 +12353,7 @@ ping localhost -n 2 >nul
 goto rfmATK_STR
 
 :rfmATK_STR
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
-if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
 echo.
 echo.                                                         
@@ -12858,34 +12407,7 @@ goto rfmFS3_STR
 
 :rfmFS3_STR
 set /a dmgnpc=%random%*30/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %dmgnpc% LEQ 0 set /a dmgnpc=0
+call :determine_defense dmgnpc
 set /a dmgnpc=%dmgnpc%*%towerwin%
 cls
 echo.
@@ -13986,3 +13508,76 @@ if %login% EQU 1 goto C4
 if %login% EQU 2 goto D3
 if %login% EQU 3 goto FOREST
 goto B2
+
+
+:: Routines that will be used in combat sections
+
+:set_damage
+if %swordtype% EQU Your set /a damage=%random%*50/32767+1
+if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
+if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
+if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
+if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
+if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
+if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
+if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
+if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
+if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
+if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
+if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
+if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
+if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
+if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
+if %swordtype% EQU Shining set /a damage=%random%*600/32767+1
+if %swordtype% EQU Shadow set /a damage=%random%*600/32767+1
+if %swordtype% EQU Godess set /a damage=%random%*600/32767+1
+if %swordtype% EQU Alydril set /a damage=%random%*600/32767+1
+if %swordtype% EQU Moon set /a damage=%random%*600/32767+1
+if %swordtype% EQU Sun set /a damage=%random%*600/32767+1
+if %swordtype% EQU Cannon set /a damage=%random%*600/32767+1
+if %swordtype% EQU Spiked set /a damage=%random%*600/32767+1
+if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
+if %class% EQU Warrior set /a damage=%damage%+15
+if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
+if %swordtype% EQU Water set /a damage=%random%*600/32767+1
+if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
+if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
+if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
+if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
+if %damage% GTR %health% set /a damage=%health%
+goto :eof
+
+
+:determine_defense
+set /a dmgnpc=%1 
+if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
+if %armtype% EQU Chain set /a dr=%random%*20/32767+1
+if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
+if %armtype% EQU Iron set /a dr=%random%*65/32767+1
+if %armtype% EQU Steel set /a dr=%random%*100/32767+1
+if %armtype% EQU Gold set /a dr=%random%*120/32767+1
+if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
+if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
+if %armtype% EQU Runic set /a dr=%random%*200/32767+1
+if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
+if %armtype% EQU Omega set /a dr=%random%*230/32767+1
+if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
+if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
+if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
+if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
+if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
+if %class% EQU Brute set /a damage=%damage%-10
+if %dmgnpc% LEQ 0 set /a dmgnpc=0
+goto :eof
