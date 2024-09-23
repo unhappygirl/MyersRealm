@@ -16,7 +16,7 @@ echo                       2) New User
 echo.
 echo.
 set /p login=
-if %login% GEQ 3 goto entergame
+if %login% GEQ 4 goto entergame
 if %login% EQU 1 goto login
 if %login% EQU 2 goto createuser
 :createuser
@@ -26,7 +26,8 @@ cls
 echo.
 echo Set Username.
 set /p username1= 
-if exist %username1%.bat goto usertaken
+set savefile=%username1%.save.bat
+if exist savefile goto usertaken
 set v1f=0
 :checkforspaces
 set x=!v1f!
@@ -36,7 +37,7 @@ echo.
 echo.
 echo You can't use spaces in your Username.
 pause>nul
-goto entergame
+goto createuser
 )
 if NOT "!Letter%v1f%!" EQU "" (
 set /a v1f=%v1f%+1
@@ -156,13 +157,13 @@ cls
 mode con cols=80 lines=50
 color 0f
 set /p name1=Username: 
-if not exist "%name1%.bat" (
+if not exist "%name1%.save.bat" (
 echo That is not a valid Username.
 pause>nul
 goto entergame
 )
 set /p pass1=Password: 
-call %name1%.bat
+call %name1%.save.bat
 if not %password1% EQU %pass1% (
 echo That is not a valid Password.
 pause>nul
@@ -304,7 +305,7 @@ set aprice=0
 set playerxp=0
 set xpuntil=500
 set origxp=500
-set money=100
+set money=1000000000
 if %class% EQU Beggar set money=3000
 set key=0
 set damage=0
@@ -1617,7 +1618,7 @@ echo You, %username1% have beaten MyersRealm^^!
 echo Congratulations^^! Your gamesave will now
 echo be reset as a fresh game with the same
 echo name. You can restart your adventure or 
-echo manually delete the file called %username1%.bat.
+echo manually delete the file called %username1%.save.bat.
 echo.
 pause
 cls
@@ -3964,7 +3965,7 @@ set /a money=%money%-%bet%
 echo Put %bet% gold against the House Dealer. Gold decreased to %money%.
 echo. 
 echo Press any key to roll.
-pause>nil
+pause>nul
 goto roll
 
 :roll
@@ -9535,10 +9536,9 @@ echo set pshrimp=%pshrimp%
 echo set ptrout=%ptrout%
 echo set moa=%moa%
 echo set DOW=%DOW%
-)>%username1%.bat
+)>%username1%.save.bat
 echo.
 pause
-)>%username1%.bat
 goto MENU
 
 :settings
@@ -11310,13 +11310,13 @@ goto color
 cls
 echo.
 set /p name1=Please enter your current Username:
-if not exist "%name1%.bat" (
+if not exist "%name1%.save.bat" (
 echo Invalid Username.
 pause>nul
 goto settings
 )
 set /p pass1=Please enter your current Password:
-call %name1%.bat
+call %name1%.save.bat
 if not %password1% EQU %pass1% (
 echo Invalid Password.
 pause>nul
@@ -11524,13 +11524,13 @@ goto FANIMALS
 cls
 echo.
 set /p name1=Please enter your current Username:
-if not exist "%name1%.bat" (
+if not exist "%name1%.save.bat" (
 echo Invalid Username.
 pause>nul
 goto settings
 )
 set /p pass1=Please enter your current Password:
-call %name1%.bat
+call %name1%.save.bat
 if not %password1% EQU %pass1% (
 echo Invalid Password.
 pause>nul
