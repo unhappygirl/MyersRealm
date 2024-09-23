@@ -6602,7 +6602,7 @@ goto tradesmuggler
 
 :picknpc
 set /a FATIGUE=%FATIGUE%+12
-set /a npc=%random% %% 25+1
+set /a npc=%random% %% 26+1
 if %npc% EQU 1 set npctype=Goblin
 if %npc% EQU 2 set npctype=Giant
 if %npc% EQU 3 set npctype=Dragon
@@ -6613,7 +6613,7 @@ if %npc% EQU 7 set npctype=Farmer
 if %npc% EQU 8 set npctype=Bear
 if %npc% EQU 9 set npctype=Rockbeast
 if %npc% EQU 10 set npctype=Ent
-if %npc% EQU 11 set npctype=Theif
+if %npc% EQU 11 set npctype=thief
 if %npc% EQU 12 set npctype=Elemental
 if %npc% EQU 13 set npctype=Rat
 if %npc% EQU 14 set npctype=Madman
@@ -6628,6 +6628,7 @@ if %npc% EQU 22 set npctype=Cow
 if %npc% EQU 23 set npctype=Unicorn
 if %npc% EQU 24 set npctype=Shadow
 if %npc% EQU 25 set npctype=Legend
+if %npc% EQU 26 set npctype=Ectoplasm
 
 :BATTLE_VARIABLES
 set health=0
@@ -6800,7 +6801,7 @@ if %npctype% EQU Farmer set /a dmgnpc=%random%*85/32767+1
 if %npctype% EQU Bear set /a dmgnpc=%random%*183/32767+1
 if %npctype% EQU Rocktor set /a dmgnpc=%random%*240/32767+1
 if %npctype% EQU Ent set /a dmgnpc=%random%*300/32767+1
-if %npctype% EQU Theif set /a dmgnpc=%random%*330/32767+1
+if %npctype% EQU thief set /a dmgnpc=%random%*330/32767+1
 if %npctype% EQU Elemental set /a dmgnpc=%random%*360/32767+1
 if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
 if %armtype% EQU Chain set /a dr=%random%*20/32767+1
@@ -6855,120 +6856,39 @@ if %xpuntil% LEQ 0 set destination=dropitem
 if %xpuntil% LEQ 0 goto levelup
 
 :dropitem
-if %npctype% EQU Goblin goto goblindrop
-if %npctype% EQU Giant goto giantdrop
-if %npctype% EQU Dragon goto dragondrop
-if %npctype% EQU Mage goto magedrop
-if %npctype% EQU Sorcerer goto sorcererdrop
-if %npctype% EQU Human goto humandrop
-if %npctype% EQU Farmer goto farmerdrop
-if %npctype% EQU Bear goto beardrop
-if %npctype% EQU Rockbeast goto rockbeastdrop
-if %npctype% EQU Ent goto entdrop
-if %npctype% EQU Theif goto theifdrop
-if %npctype% EQU Elemental goto elementaldrop
-if %npctype% EQU Rat goto beardrop
-if %npctype% EQU Madman goto madmandrop
-if %npctype% EQU Wort goto wortdrop
-if %npctype% EQU Skeleton goto dragondrop
-if %npctype% EQU Succubus goto magedrop
-if %npctype% EQU Ghost goto sorcererdrop
-if %npctype% EQU Mutant goto humandrop
-if %npctype% EQU Eagle goto eagledrop
-if %npctype% EQU Cow goto beardrop
-if %npctype% EQU Unicorn goto rockbeastdrop
-if %npctype% EQU Shadow goto theifdrop
-if %npctype% EQU Legend goto elementaldrop
+if %npctype% EQU Goblin       call :npcdrop a gmail "Goblin Mail"
+if %npctype% EQU Giant        call :npcdrop 3 hbone "Huge Bones"
+if %npctype% EQU Dragon       call :npcdrop 3 dhide "Dragon Hides"
+if %npctype% EQU Mage         call :npcdrop 2 rtab "Runic Tablets"
+if %npctype% EQU Sorcerer     call :npcdrop 2 potion "Potions"
+if %npctype% EQU Human        call :npcdrop 2 food "Food"
+if %npctype% EQU Farmer       call :npcdrop 4 seed "Seeds"
+if %npctype% EQU Bear         call :npcdrop 5 fur "Fur"
+if %npctype% EQU Rockbeast    call :npcdrop 6 ore "Ore"
+if %npctype% EQU Ent          call :npcdrop 10 log "Logs"
+if %npctype% EQU thief        call :npcdrop 5 gem "Gemstones"
+if %npctype% EQU Elemental    call :npcdrop 5 morb "Magic Orbs"
+if %npctype% EQU Rat          call :npcdrop 5 fur "Fur"
+if %npctype% EQU Madman       call :npcdrop a maps "Map"
+if %npctype% EQU Wort         call :npcdrop a crab "Crab"
+if %npctype% EQU Skeleton     call :npcdrop 3 dhide "Dragon Hides"
+if %npctype% EQU Succubus     call :npcdrop 2 rtab "Runic Tablets"
+if %npctype% EQU Ghost        call :npcdrop 2 potion "Potions"
+if %npctype% EQU Mutant       call :npcdrop 2 food "Food"
+if %npctype% EQU Eagle        call :npcdrop a kingfish "Kingfish"
+if %npctype% EQU Cow          call :npcdrop 5 fur "Fur"
+if %npctype% EQU Unicorn      call :npcdrop 6 ore "Ore"
+if %npctype% EQU Shadow       call :npcdrop 5 gem "Gemstones"
+if %npctype% EQU Legend       call :npcdrop 5 morb "Magic Orbs"
+if %npctype% EQU Ectoplasm    call :npcdrop 0 none "nothing"
+if %npctype% EQU Endoplasm    call :npcdrop 0 none "nothing"
 
-:wortdrop
-set word=a
-set /a crab=%crab%+1
-set drop=Crab
+:npcdrop
+set word=%1
+set /a %2=%2+%word%
+set drop=%3
 goto win
 
-:eagledrop
-set word=a
-set /a kingfish=%kingfish%+1
-set drop=Kingfish
-goto win
-
-:madmandrop
-set word=a
-set /a maps=%maps%+1
-set drop=Map
-goto win
-
-:goblindrop
-set word=a
-set /a gmail=%gmail%+1
-set drop=Goblin Mail
-goto win
-
-:giantdrop
-set word=3
-set /a hbone=%hbone%+3
-set drop=Huge Bones
-goto win
-
-:dragondrop
-set word=3
-set /a dhide=%dhide%+3
-set drop=Dragon Hides
-goto win
-
-:magedrop
-set word=2
-set /a rtab=%rtab%+2
-set drop=Runic Tablets
-goto win
-
-:sorcererdrop
-set word=2
-set /a potion=%potion%+2
-set drop=Potions
-goto win
-
-:humandrop
-set word=2
-set /a food=%food%+2
-set drop=Food
-goto win
-
-:farmerdrop
-set word=4
-set /a seed=%seed%+4
-set drop=Seeds
-goto win
-
-:beardrop
-set word=5
-set /a fur=%fur%+5
-set drop=Fur
-goto win
-
-:rockbeastdrop
-set word=6
-set /a ore=%ore%+6
-set drop=Ore
-goto win
-
-:entdrop
-set word=10
-set /a log=%log%+10
-set drop=Logs
-goto win
-
-:theifdrop
-set word=5
-set /a gem=%gem%+5
-set drop=Gemstones
-goto win
-
-:elementaldrop
-set word=5
-set /a morb=%morb%+5
-set drop=Magic Orbs
-goto win
 
 :levelup
 set /a rupee=%rupee%+1
@@ -10471,7 +10391,7 @@ if %npctype% EQU Soul goto hfarmerdrop
 if %npctype% EQU Demon goto hbeardrop
 if %npctype% EQU Eldersoul goto hrockbeastdrop
 if %npctype% EQU Lava Mantis goto hentdrop
-if %npctype% EQU Lost Cow goto htheifdrop
+if %npctype% EQU Lost Cow goto hthiefdrop
 if %npctype% EQU Grandsoul goto helementaldrop
 if %npctype% EQU Ghoul goto hbeardrop
 if %npctype% EQU Undead goto hmadmandrop
@@ -10483,7 +10403,7 @@ if %npctype% EQU Scorpoid goto hhumandrop
 if %npctype% EQU Megasoul goto heagledrop
 if %npctype% EQU Mutant goto hbeardrop
 if %npctype% EQU Sleeper goto hrockbeastdrop
-if %npctype% EQU Craw goto htheifdrop
+if %npctype% EQU Craw goto hthiefdrop
 if %npctype% EQU Magmug goto helementaldrop
 if %npctype% EQU Devil's Mutt goto helementaldrop
 
@@ -10566,7 +10486,7 @@ set /a log=%log%+10
 set drop=Logs
 goto hwin
 
-:htheifdrop
+:hthiefdrop
 set word=5
 set /a gem=%gem%+5
 set drop=Gemstones
