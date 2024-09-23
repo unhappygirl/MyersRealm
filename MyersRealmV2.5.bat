@@ -48,7 +48,10 @@ echo Set Password.
 set /p password1= 
 cls
 set retired=0
+call :sscolor cnnnh Continue
 :sscolor
+set fallback=%1
+set fallbacktext=%2
 cls
 echo.
 echo Choose a Planetary Sign that best suits you.
@@ -63,10 +66,10 @@ echo 6) Mars
 echo 7) Earth
 echo 8) Mercury
 echo.
-echo 9) Continue
+echo 9) %fallbacktext%
 echo.
 set /p colorcho=
-if %colorcho% EQU 9 goto cnnnh
+if %colorcho% EQU 9 goto %fallback%
 if %colorcho% EQU 1 set cpick=0b
 if %colorcho% EQU 2 set cpick=05
 if %colorcho% EQU 3 set cpick=04
@@ -76,7 +79,7 @@ if %colorcho% EQU 6 set cpick=0c
 if %colorcho% EQU 7 set cpick=0a
 if %colorcho% EQU 8 set cpick=01
 color %cpick%
-goto sscolor
+call :sscolor %1 %2
 :cnnnh
 cls
 echo.
@@ -9291,7 +9294,7 @@ echo.
 echo 5) Back
 echo.
 set /p scho=
-if %scho% EQU 1 goto color
+if %scho% EQU 1 call :sscolor settings Back
 if %scho% EQU 2 goto namechange
 if %scho% EQU 3 goto passchange
 if %scho% EQU 4 goto HELP
@@ -10864,36 +10867,6 @@ echo.
 echo Magmus: Title selected. Your current title is %Hupgradee%.
 pause>nul
 goto HELLVAULT
-
-:color
-cls
-echo.
-echo Choose a Planetary Sign that best suits you.
-echo Each sign represents a unique color-scheme for your game.
-echo.
-echo 1) Venus
-echo 2) Jupiter
-echo 3) Saturn
-echo 4) Neptune
-echo 5) Uranus
-echo 6) Mars
-echo 7) Earth
-echo 8) Mercury
-echo.
-echo 9) Back
-echo.
-set /p colorcho=
-if %colorcho% EQU 9 goto settings
-if %colorcho% EQU 1 set cpick=0b
-if %colorcho% EQU 2 set cpick=05
-if %colorcho% EQU 3 set cpick=04
-if %colorcho% EQU 4 set cpick=07
-if %colorcho% EQU 5 set cpick=06
-if %colorcho% EQU 6 set cpick=0c
-if %colorcho% EQU 7 set cpick=0a
-if %colorcho% EQU 8 set cpick=01
-color %cpick%
-goto color
 
 :namechange
 cls
