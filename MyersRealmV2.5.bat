@@ -659,7 +659,7 @@ set /a FATIGUE=%FATIGUE%+1
 if %FATIGUE% GTR 99 GOTO DFATIGUE
 if %FATIGUE% GTR 90 GOTO D2FATIGUE
 set /a RandE=%random%*200/32767+1
-if %RandE% GEQ 150 if %sweather% EQU Stormy goto STORMDIE
+if %RandE% GEQ 150 if %sweather% EQU Stormy call :die "The STORMY weather sucks you up^^!" HOME
 if %RandE% GEQ 170 if %sweather% EQU Evil goto HELLFLY
 if %RandE% GEQ 190 if %sweather% EQU Cloudy set sweather=Rainy
 if %RandE% GEQ 190 if %sweather% EQU Moonlit set sweather=Creepy
@@ -1709,14 +1709,6 @@ echo You need a map first to use it as a Teleport Map.
 echo.
 pause
 goto MENU
-
-:STORMDIE
-cls
-echo.
-echo The STORMY weather sucks you up^^!
-echo.
-pause
-goto DIE
 
 :1RandE
 cls
@@ -2889,7 +2881,7 @@ echo.
 echo You collapse from fatigue...
 echo.
 pause
-goto DIE2
+call :die "You died from high fatigue." HOME
 
 :CASTLE
 set /a ttllvl=%Woodcuttinglvl%+%Cooklvl%+%Fishinglvl%+%Thievinglvl%+%Mininglvl%+%Smithinglvl%
@@ -5120,7 +5112,7 @@ echo.
 set /a money=%money%-500
 set /a wins=0
 pause
-goto die
+call :die_all_hp
 
 :shootshoot
 if %opammo% GEQ 1 goto shootshoot1
@@ -5144,7 +5136,7 @@ echo.
 set /a money=%money%-500
 set /a wins=0
 pause
-goto die
+call :die_all_hp
 
 :noammo
 echo.
@@ -5541,12 +5533,7 @@ goto ATK_STR
 :ATK_STR
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack.
 echo.
 ping localhost -n 2 >nul
@@ -5573,12 +5560,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -5594,41 +5576,9 @@ goto FS3_STR
 if %npctype% EQU Werewolf set /a dmgnpc=%random%*30/32767+1
 if %npctype% EQU Ranger set /a dmgnpc=%random%*30/32767+1
 if %npctype% EQU Warrior set /a dmgnpc=%random%*30/32767+1
-if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
-if %armtype% EQU Chain set /a dr=%random%*20/32767+1
-if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
-if %armtype% EQU Iron set /a dr=%random%*65/32767+1
-if %armtype% EQU Steel set /a dr=%random%*100/32767+1
-if %armtype% EQU Gold set /a dr=%random%*120/32767+1
-if %armtype% EQU Crystal set /a dr=%random%*145/32767+1
-if %armtype% EQU Sacred set /a dr=%random%*175/32767+1
-if %armtype% EQU Runic set /a dr=%random%*200/32767+1
-if %armtype% EQU Infernal set /a dr=%random%*215/32767+1
-if %armtype% EQU Omega set /a dr=%random%*230/32767+1
-if %armtype% EQU Chaotic set /a dr=%random%*250/32767+1
-if %armtype% EQU Mythical set /a dr=%random%*275/32767+1
-if %armtype% EQU Alydril set /a dr=%random%*300/32767+1
-if %armtype% EQU Cloth set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chain set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Bronze set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Iron set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Steel set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Gold set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Crystal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Sacred set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Runic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Infernal set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Omega set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Chaotic set /a dmgnpc=%dmgnpc%-%dr%
-if %armtype% EQU Mythical set /a dmgnpc=%dmgnpc%-%dr%
-if %dmgnpc% LEQ 0 set /a dmgnpc=0
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo The %npctype% attacks.
 if %dmgnpc% LEQ 0 (
 set /a v=%random%*85/32767+1
@@ -5637,7 +5587,7 @@ echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+call :lost_all_health? HOME
 echo.
 echo You now have %hp% health left.
 ping localhost -n 2 >nul
@@ -5677,12 +5627,7 @@ echo You enter Belabond's throne room...
 echo.
 ping localhost -n 2 >nul
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You encounter %npctype%, a level %level% War Commander.
 echo.
 ping localhost -n 2 >nul
@@ -5691,11 +5636,7 @@ goto ATK_STR_3
 :ATK_STR_3
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -5847,12 +5788,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -5869,12 +5805,7 @@ goto FS_STR_3
 if %npctype% EQU Belabond set /a dmgnpc=%random%*45/32767+1
 
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %npctype% attacks.
 echo.
 if %dmgnpc% LEQ 50 (
@@ -5884,7 +5815,7 @@ set /a dmgnpc=%dmgnpc%+%v% )
 ping localhost -n 2 >nul
 echo %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+call :lost_all_health? HOME
 echo.
 echo You now have %hp% health left.
 ping localhost -n 2 >nul
@@ -6041,12 +5972,7 @@ echo.
 echo You enter the Elder Dragon's lair...
 echo.
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You encounter %npctype%, a level %level% dragon.
 echo.
 ping localhost -n 2 >nul
@@ -6055,12 +5981,7 @@ goto ATK_STR_32
 :ATK_STR_32
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack.
 echo.
 ping localhost -n 2 >nul
@@ -6153,7 +6074,7 @@ goto home
 :OUTTUMMY
 set /a TUMMY=%TUMMY%+1
 echo.
-goto die
+call :die_all_hp
 
 :DLearned
 cls
@@ -6554,12 +6475,7 @@ goto fs1
 
 :fs1
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -6574,12 +6490,7 @@ if %atkcho% EQU 3 goto flee
 :atk
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack^^!
 echo.
 ping localhost -n 2 >nul
@@ -6608,12 +6519,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -6652,22 +6558,17 @@ if %npctype% EQU Rocktor set /a dmgnpc=%random%*240/32767+1
 if %npctype% EQU Ent set /a dmgnpc=%random%*300/32767+1
 if %npctype% EQU thief set /a dmgnpc=%random%*330/32767+1
 if %npctype% EQU Elemental set /a dmgnpc=%random%*360/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo The %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
 echo.
 echo You now have %hp% health left.
+call :lost_all_health? HOME
 pause>nul
 goto fs1
 
@@ -6737,44 +6638,6 @@ set /a money=%money%+(%curlvl%/2*100)
 echo.
 pause>nul
 goto MOUNTAINS
-
-:die
-cls
-echo.
-set /a chappy=%chappy%-2
-set /a nrep=%nrep%+1
-echo You died from losing all health.
-echo.
-pause>nul
-set hp=50
-set ammo=0
-set opammo=0
-set wins=0
-set fatigue=50
-set /a deathcount=%deathcount%+500
-if %class% EQU Undead goto HOME
-set /a money=%money%/2
-set /a fatigue=%fatigue%/2
-goto HOME
-
-:die2
-cls
-echo.
-set /a chappy=%chappy%-2
-set /a nrep=%nrep%+1
-echo You died from high fatigue.
-echo.
-pause>nul
-set hp=50
-set ammo=0
-set opammo=0
-set wins=0
-set fatigue=50
-set /a deathcount=%deathcount%+500
-if %class% EQU Undead HOME
-set /a money=%money%/2
-set /a fatigue=%fatigue%/2
-goto HOME
 
 :flee
 cls
@@ -9550,12 +9413,7 @@ goto sfs1
 
 :sfs1
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -9694,12 +9552,7 @@ if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
 if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack^^!
 echo.
 ping localhost -n 2 >nul
@@ -9744,12 +9597,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -9764,20 +9612,15 @@ goto sfs3
 
 :sfs3
 set /a dmgnpc=%random%*110/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo The %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+call :lost_all_health? HOME
 echo.
 echo You now have %hp% health left.
 pause>nul
@@ -9921,52 +9764,40 @@ set health=0
 if %curlvl% LEQ 2 (
 set /a health=%random% %% 100 + 75
 set /a level=%random% %% 2 + 1
-goto HF_START )
-if %curlvl% LEQ 5 (
+)
+else if %curlvl% LEQ 5 (
 set /a health=%random% %% 100 + 75
 set /a level=%random% %% 6 + 1
-goto HF_START )
-if %curlvl% LEQ 10 (
+)
+else if %curlvl% LEQ 10 (
 set /a health=%random% %% 100 + 75
 set /a level=%random% %% 14 + 1
-goto HF_START )
-if %curlvl% LEQ 15 (
+)
+else if %curlvl% LEQ 15 (
 set /a health=%random% %% 100 + 350
 set /a level=%random% %% 6 + 10
-goto HF_START )
-if %curlvl% LEQ 20 (
+)
+else if %curlvl% LEQ 20 (
 set /a health=%random% %% 100 + 500
 set /a level=%random% %% 5 + 15
-goto HF_START )
-if %curlvl% LEQ 25 (
+)
+else if %curlvl% LEQ 25 (
 set /a health=%random% %% 100 + 625
 set /a level=%random% %% 7 + 20
-goto HF_START )
-if %curlvl% LEQ 30 (
+)
+else if %curlvl% LEQ 30 (
 set /a health=%random% %% 100 + 750
 set /a level=%random% %% 10 + 25
-goto HF_START )
-if %curlvl% LEQ 37 (
+) 
+else if %curlvl% LEQ 37 (
 set /a health=%random% %% 100 + 900
 set /a level=%random% %% 15 + 30
-goto HF_START )
-
-:HF_START
-cls
-echo.
-ping localhost -n 2 >nul
-echo You encounter a level %level% %npctype%.
-ping localhost -n 2 >nul
-goto hfs1
+)
+call :fight_gateway hfs1
 
 :hfs1
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -9982,12 +9813,6 @@ goto hfs1
 :hatk
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
 echo You attack^^!
 echo.
 ping localhost -n 2 >nul
@@ -10049,12 +9874,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -10093,20 +9913,15 @@ if %npctype% EQU Sleeper set /a dmgnpc=%random%*240/32767+1
 if %npctype% EQU Craw set /a dmgnpc=%random%*300/32767+1
 if %npctype% EQU Magmug set /a dmgnpc=%random%*330/32767+1
 if %npctype% EQU Devil's Mutt set /a dmgnpc=%random%*360/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo The %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto hdie
+call :lost_all_health? HELL
 echo.
 echo You now have %hp% health left.
 pause>nul
@@ -10241,24 +10056,6 @@ echo You recieved %word% %drop%.
 echo.
 set /a killcount=%killcount%+1
 pause>nul
-goto HELL
-
-:hdie
-cls
-echo.
-set /a chappy=%chappy%-2
-set /a nrep=%nrep%+1
-echo You died from losing all health.
-echo Good thing you're already in Hell.
-echo.
-pause>nul
-set /a deathcount=%deathcount%+500
-set hp=50
-set ammo=0
-set opammo=0
-set wins=0
-if %class% EQU Undead goto HELL
-set /a money=%money%/2
 goto HELL
 
 :HELLSHOP
@@ -10401,11 +10198,7 @@ echo.
 ping localhost -n 2 >nul
 ping localhost -n 2 >nul
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
+call :print_health_status
 echo.
 echo You encounter %npctype%, a level %level% Epic Boss.
 echo.
@@ -10417,12 +10210,7 @@ goto hATK_STR_3
 call :set_damage
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -10568,20 +10356,15 @@ goto hbfightinginventory
 
 :hFS_STR_3
 set /a dmgnpc=%random%*600/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto hdie
+call :lost_all_health? HELL
 echo.
 echo You now have %hp% health left.
 ping localhost -n 2 >nul
@@ -11508,12 +11291,7 @@ goto fmATK_STR
 :fmATK_STR
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack.
 echo.
 ping localhost -n 2 >nul
@@ -11541,12 +11319,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -11560,20 +11333,15 @@ goto fmFS3_STR
 
 :fmFS3_STR
 set /a dmgnpc=%random%*30/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+call :lost_all_health? HOME
 echo.
 echo You now have %hp% health left.
 ping localhost -n 2 >nul
@@ -11621,24 +11389,12 @@ set /a FATIGUE=%FATIGUE%+12
 set npctype=Shadow Bat
 set /a health=%random% %% 99 + 600
 set /a level=%random% %% 5 + 20
-goto csF_START )
+call :fight_gateway csfs1 )
 
-:csF_START
-cls
-echo.
-ping localhost -n 2 >nul
-echo Out from the shadows leaps a level %level% %npctype%^^!
-ping localhost -n 2 >nul
-goto csfs1
 
 :csfs1
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo What would you like to do?
 echo.
 echo 1) Attack^^!
@@ -11744,44 +11500,9 @@ pause>nul
 goto csBATTLEITEMS
 
 :csatk
-if %swordtype% EQU Your set /a damage=%random%*50/32767+1
-if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
-if %swordtype% EQU Stone set /a damage=%random%*125/32767+1
-if %swordtype% EQU Bronze set /a damage=%random%*150/32767+1
-if %swordtype% EQU Iron set /a damage=%random%*175/32767+1
-if %swordtype% EQU Steel set /a damage=%random%*200/32767+1
-if %swordtype% EQU Gold set /a damage=%random%*225/32767+1
-if %swordtype% EQU Crystal set /a damage=%random%*250/32767+1
-if %swordtype% EQU Sacred set /a damage=%random%*275/32767+1
-if %swordtype% EQU Runic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Infernal set /a damage=%random%*300/32767+1
-if %swordtype% EQU Omega set /a damage=%random%*300/32767+1
-if %swordtype% EQU Chaotic set /a damage=%random%*300/32767+1
-if %swordtype% EQU Mythical set /a damage=%random%*450/32767+1
-if %swordtype% EQU Evil set /a damage=%random%*600/32767+1
-if %swordtype% EQU Shining set /a damage=%random%*680/32767+1
-if %swordtype% EQU Shadow set /a damage=%random%*710/32767+1
-if %swordtype% EQU Godess set /a damage=%random%*720/32767+1
-if %swordtype% EQU Moon set /a damage=%random%*730/32767+1
-if %swordtype% EQU Sun set /a damage=%random%*740/32767+1
-if %swordtype% EQU Cannon set /a damage=%random%*750/32767+1
-if %swordtype% EQU Spiked set /a damage=%random%*750/32767+1
-if %swordtype% EQU Brass set /a damage=%random%*600/32767+1
-if %class% EQU Warrior set /a damage=%damage%+15
-if %swordtype% EQU Water set /a damage=%random%*600/32767+1
-if %swordtype% EQU Fire set /a damage=%random%*600/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%random%*800/32767+1
-if %class% EQU Mage if %swordtype% EQU Water set /a damage=%damage%+15
-if %class% EQU Mage if %swordtype% EQU Fire set /a damage=%damage%+15
-if %damage% GTR %health% set /a damage=%health%
+call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack^^!
 echo.
 ping localhost -n 2 >nul
@@ -11826,12 +11547,7 @@ set pitem=1
 set /a pethappy=%pethappy%-1
 if %damage% GTR %health% set /a damage=%health%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %N1% %the% %N2% attacks^^!
 echo.
 ping localhost -n 2 >nul
@@ -11846,20 +11562,15 @@ goto csfs3
 
 :csfs3
 set /a dmgnpc=%random%*110/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo The %npctype% attacks.
 echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+call :lost_all_health? HOME
 echo.
 echo You now have %hp% health left.
 pause>nul
@@ -11990,7 +11701,7 @@ title MyersRealm - World Map
 cls
 echo.
 set /a RandE=%random%*200/32767+1
-if %RandE% GEQ 150 if %sweather% EQU Stormy goto STORMDIE
+if %RandE% GEQ 150 if %sweather% EQU Stormy call :die "The STORMY weather sucks you up^^!" HOME
 if %RandE% GEQ 170 if %sweather% EQU Evil goto HELLFLY
 if %RandE% GEQ 190 if %sweather% EQU Cloudy set sweather=Rainy
 if %RandE% GEQ 190 if %sweather% EQU Moonlit set sweather=Creepy
@@ -12328,12 +12039,7 @@ goto rfmATK_STR
 :rfmATK_STR
 call :set_damage
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo You attack.
 echo.
 ping localhost -n 2 >nul
@@ -12380,15 +12086,10 @@ goto rfmFS3_STR
 
 :rfmFS3_STR
 set /a dmgnpc=%random%*30/32767+1
-call :determine_defense dmgnpc
+call :determine_resistant_damage dmgnpc
 set /a dmgnpc=%dmgnpc%*%towerwin%
 cls
-echo.
-echo.                                                         
-echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
-echo.                                                         
-echo.
-echo.
+call :print_health_status
 echo %npctype% attacks.
 set /a ztowerwin=%towerwin%+1
 if %dmgnpc% LEQ 0 set /a dmgnpc=20*%ztowerwin%
@@ -12396,7 +12097,7 @@ echo.
 ping localhost -n 2 >nul
 echo The %npctype% deals %dmgnpc% damage to you.
 set /a hp=%hp% - %dmgnpc%
-if %hp% LEQ 0 goto die
+if %hp% LEQ 0 call die You died from losing all your health.
 echo.
 echo You now have %hp% health left.
 ping localhost -n 2 >nul
@@ -13485,6 +13186,20 @@ goto B2
 
 :: Routines that will be used in combat sections
 
+:player_turn
+
+
+:fight_gateway
+set fight_routine = %1
+cls
+echo.
+ping localhost -n 2 >nul
+echo You encounter a level %level% %npctype%.
+ping localhost -n 2 >nul
+goto fight_routine
+
+:set_battle_variables
+
 :set_damage
 if %swordtype% EQU Your set /a damage=%random%*50/32767+1
 if %swordtype% EQU Wooden set /a damage=%random%*100/32767+1
@@ -13521,8 +13236,8 @@ if %damage% GTR %health% set /a damage=%health%
 goto :eof
 
 
-:determine_defense
-set /a dmgnpc=%1 
+:determine_resistant_damage
+set /a dmgnpc=%1
 if %armtype% EQU Cloth set /a dr=%random%*10/32767+1
 if %armtype% EQU Chain set /a dr=%random%*20/32767+1
 if %armtype% EQU Bronze set /a dr=%random%*40/32767+1
@@ -13554,3 +13269,50 @@ if %armtype% EQU Alydril set /a dmgnpc=%dmgnpc%-%dr%
 if %class% EQU Brute set /a damage=%damage%-10
 if %dmgnpc% LEQ 0 set /a dmgnpc=0
 goto :eof
+
+
+:print_health_status
+echo.
+echo.                                                         
+echo **** Your Health: %hp% ***** %npctype%'s Health: %health% ****
+echo.                                                         
+echo.
+echo.
+goto :eof
+
+
+
+
+:: Routines for handling user death
+
+:die 
+if %2 EQU HELL (
+    echo Good thing you're already in Hell.
+)
+cls
+echo.
+echo.
+echo %1
+set /a chappy=%chappy%-2
+set /a nrep=%nrep%+1
+pause>nul
+set hp=50
+set ammo=0
+set opammo=0
+set wins=0
+set fatigue=50
+set /a deathcount=%deathcount%+500
+if NOT %class% EQU Undead (
+    set /a money=%money%/2
+)
+set /a fatigue=%fatigue%/2
+goto %2
+
+
+:die_all_hp
+call :die "You died because you lost all your HP^^!" %1
+
+
+:lost_all_health?
+if %hp% LEQ 0 call :die_all_hp %1
+
