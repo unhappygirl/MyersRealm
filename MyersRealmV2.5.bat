@@ -16,6 +16,9 @@ echo                       2) New User
 echo.
 echo.
 set /p login=""
+if "%login%"=="" (
+    goto entergame
+)
 if %login% EQU 1 goto login
 if %login% EQU 2 goto createuser
 if %login% NOT EQU 1 (goto entergame)
