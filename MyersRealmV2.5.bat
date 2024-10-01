@@ -15,10 +15,11 @@ echo                       1) Login
 echo                       2) New User
 echo.
 echo.
-set /p login=
-if %login% GEQ 4 goto entergame
+set /p login=""
 if %login% EQU 1 goto login
 if %login% EQU 2 goto createuser
+if %login% NOT EQU 1 (goto entergame)
+if %login% NOT EQU 2 (goto entergame)
 :createuser
 mode con cols=80 lines=50
 color 0f
@@ -6400,117 +6401,7 @@ echo.
 pause>nul
 goto tradesmuggler
 
-:picknpc
-set /a FATIGUE=%FATIGUE%+12
-set /a npc=%random% %% 26+1
-if %npc% EQU 1 set npctype=Goblin
-if %npc% EQU 2 set npctype=Giant
-if %npc% EQU 3 set npctype=Dragon
-if %npc% EQU 4 set npctype=Mage
-if %npc% EQU 5 set npctype=Sorcerer
-if %npc% EQU 6 set npctype=Human
-if %npc% EQU 7 set npctype=Farmer
-if %npc% EQU 8 set npctype=Bear
-if %npc% EQU 9 set npctype=Rockbeast
-if %npc% EQU 10 set npctype=Ent
-if %npc% EQU 11 set npctype=thief
-if %npc% EQU 12 set npctype=Elemental
-if %npc% EQU 13 set npctype=Rat
-if %npc% EQU 14 set npctype=Madman
-if %npc% EQU 15 set npctype=Wort
-if %npc% EQU 16 set npctype=Skeleton
-if %npc% EQU 17 set npctype=Succubus
-if %npc% EQU 18 set npctype=Ghost
-if %npc% EQU 19 set npctype=Scorpion
-if %npc% EQU 20 set npctype=Eagle
-if %npc% EQU 21 set npctype=Mutant
-if %npc% EQU 22 set npctype=Cow
-if %npc% EQU 23 set npctype=Unicorn
-if %npc% EQU 24 set npctype=Shadow
-if %npc% EQU 25 set npctype=Legend
-if %npc% EQU 26 set npctype=Ectoplasm
 
-:BATTLE_VARIABLES
-set health=0
-if %curlvl% LEQ 2 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 2 + 1
-goto F_START )
-if %curlvl% LEQ 5 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 6 + 1
-goto F_START )
-if %curlvl% LEQ 10 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 14 + 1
-goto F_START )
-if %curlvl% LEQ 15 (
-set /a health=%random% %% 100 + 350
-set /a level=%random% %% 6 + 10
-goto F_START )
-if %curlvl% LEQ 20 (
-set /a health=%random% %% 100 + 500
-set /a level=%random% %% 5 + 15
-goto F_START )
-if %curlvl% LEQ 25 (
-set /a health=%random% %% 100 + 625
-set /a level=%random% %% 7 + 20
-goto F_START )
-if %curlvl% LEQ 30 (
-set /a health=%random% %% 100 + 750
-set /a level=%random% %% 10 + 25
-goto F_START )
-if %curlvl% LEQ 37 (
-set /a health=%random% %% 100 + 900
-set /a level=%random% %% 15 + 30
-goto F_START )
-
-:F_START
-cls
-echo.
-ping localhost -n 2 >nul
-echo You encounter a level %level% %npctype%.
-ping localhost -n 2 >nul
-goto fs1
-
-:fs1
-cls
-call :print_health_status
-echo What would you like to do?
-echo.
-echo 1) Attack^^!
-echo 2) Inventory
-echo 3) Flee^^!
-echo.
-set /p atkcho=
-if %atkcho% EQU 1 goto atk
-if %atkcho% EQU 2 goto fightinginventory
-if %atkcho% EQU 3 goto flee
-
-:atk
-call :set_damage
-cls
-call :print_health_status
-echo You attack^^!
-echo.
-ping localhost -n 2 >nul
-set /a atkxp=((%damage%/4)*3)
-set /a playerxp=%playerxp%+%atkxp%
-set /a xpuntil=%xpuntil%-%atkxp%
-set /a health=%health% - %damage%
-echo You deal %damage% damage to the %npctype%^^!
-echo.
-echo It now has %health% health left.
-echo.
-echo You gain %atkxp% EXP.
-pause>nul
-if %curlvl% GEQ 37 set /a xpuntil=1
-if %playerxp% GEQ 1000000 set /a playerxp=1000000
-if %health% LEQ 0 goto checkiflvlup
-if %xpuntil% LEQ 0 set destination=fs3
-if %xpuntil% LEQ 0 goto levelup
-if %petowner% EQU 1 goto Patk
-goto fs3
 
 :Patk
 set /a damage=%random%*100/32767+1
@@ -6532,45 +6423,6 @@ pause>nul
 if %health% LEQ 0 goto checkiflvlup
 goto fs3
 
-:fs3
-if %npctype% EQU Madman set /a dmgnpc=%random%*30/32767+1
-if %npctype% EQU Wort set /a dmgnpc=%random%*60/32767+1
-if %npctype% EQU Skeleton set /a dmgnpc=%random%*90/32767+1
-if %npctype% EQU Succubus set /a dmgnpc=%random%*120/32767+1
-if %npctype% EQU Ghost set /a dmgnpc=%random%*150/32767+1
-if %npctype% EQU Scorpion set /a dmgnpc=%random%*50/32767+1
-if %npctype% EQU Eagle set /a dmgnpc=%random%*85/32767+1
-if %npctype% EQU Mutant set /a dmgnpc=%random%*183/32767+1
-if %npctype% EQU Cow set /a dmgnpc=%random%*240/32767+1
-if %npctype% EQU Unicorn set /a dmgnpc=%random%*300/32767+1
-if %npctype% EQU Shadow set /a dmgnpc=%random%*330/32767+1
-if %npctype% EQU Legend set /a dmgnpc=%random%*360/32767+1
-if %npctype% EQU Rat set /a dmgnpc=%random%*53/32767+1
-if %npctype% EQU Goblin set /a dmgnpc=%random%*30/32767+1
-if %npctype% EQU Giant set /a dmgnpc=%random%*60/32767+1
-if %npctype% EQU Dragon set /a dmgnpc=%random%*90/32767+1
-if %npctype% EQU Mage set /a dmgnpc=%random%*120/32767+1
-if %npctype% EQU Sorcerer set /a dmgnpc=%random%*150/32767+1
-if %npctype% EQU Human set /a dmgnpc=%random%*50/32767+1
-if %npctype% EQU Farmer set /a dmgnpc=%random%*85/32767+1
-if %npctype% EQU Bear set /a dmgnpc=%random%*183/32767+1
-if %npctype% EQU Rocktor set /a dmgnpc=%random%*240/32767+1
-if %npctype% EQU Ent set /a dmgnpc=%random%*300/32767+1
-if %npctype% EQU thief set /a dmgnpc=%random%*330/32767+1
-if %npctype% EQU Elemental set /a dmgnpc=%random%*360/32767+1
-call :determine_resistant_damage dmgnpc
-cls
-call :print_health_status
-echo The %npctype% attacks.
-echo.
-ping localhost -n 2 >nul
-echo The %npctype% deals %dmgnpc% damage to you.
-set /a hp=%hp% - %dmgnpc%
-echo.
-echo You now have %hp% health left.
-call :lost_all_health? HOME
-pause>nul
-goto fs1
 
 :checkiflvlup
 if %xpuntil% LEQ 0 set destination=dropitem
@@ -9760,40 +9612,7 @@ if %npc% EQU 24 set npctype=Magmug
 if %npc% EQU 25 set npctype=Devil's Mutt
 
 :HBATTLE_VARIABLES
-set health=0
-if %curlvl% LEQ 2 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 2 + 1
-)
-else if %curlvl% LEQ 5 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 6 + 1
-)
-else if %curlvl% LEQ 10 (
-set /a health=%random% %% 100 + 75
-set /a level=%random% %% 14 + 1
-)
-else if %curlvl% LEQ 15 (
-set /a health=%random% %% 100 + 350
-set /a level=%random% %% 6 + 10
-)
-else if %curlvl% LEQ 20 (
-set /a health=%random% %% 100 + 500
-set /a level=%random% %% 5 + 15
-)
-else if %curlvl% LEQ 25 (
-set /a health=%random% %% 100 + 625
-set /a level=%random% %% 7 + 20
-)
-else if %curlvl% LEQ 30 (
-set /a health=%random% %% 100 + 750
-set /a level=%random% %% 10 + 25
-) 
-else if %curlvl% LEQ 37 (
-set /a health=%random% %% 100 + 900
-set /a level=%random% %% 15 + 30
-)
-call :fight_gateway hfs1
+
 
 :hfs1
 cls
@@ -11749,7 +11568,7 @@ echo 4) Back
 set /p login=
 if %login% EQU 1 goto MSB
 if %login% EQU 2 goto MBH
-if %login% EQU 3 goto picknpc
+if %login% EQU 3 goto initiate_battle
 if %login% EQU 4 goto WORLDMAP
 goto MOUNTAINS
 
@@ -13186,19 +13005,138 @@ goto B2
 
 :: Routines that will be used in combat sections
 
+:set_battle_variables
+set health=0
+if %curlvl% LEQ 2 (
+set /a health=%random% %% 100 + 75
+set /a level=%random% %% 2 + 1
+)
+if %curlvl% LEQ 5 (
+set /a health=%random% %% 100 + 75
+set /a level=%random% %% 6 + 1
+)
+if %curlvl% LEQ 10 (
+set /a health=%random% %% 100 + 75
+set /a level=%random% %% 14 + 1
+)
+if %curlvl% LEQ 15 (
+set /a health=%random% %% 100 + 350
+set /a level=%random% %% 6 + 10
+)
+if %curlvl% LEQ 20 (
+set /a health=%random% %% 100 + 500
+set /a level=%random% %% 5 + 15
+)
+if %curlvl% LEQ 25 (
+set /a health=%random% %% 100 + 625
+set /a level=%random% %% 7 + 20
+)
+if %curlvl% LEQ 30 (
+set /a health=%random% %% 100 + 750
+set /a level=%random% %% 10 + 25
+) 
+if %curlvl% LEQ 37 (
+set /a health=%random% %% 100 + 900
+set /a level=%random% %% 15 + 30
+)
+goto :eof
+
+:picknpc
+set /a FATIGUE=%FATIGUE%+12
+set /a npc=%random% %% 26+1
+if %npc% EQU 1 set npctype=Goblin
+if %npc% EQU 2 set npctype=Giant
+if %npc% EQU 3 set npctype=Dragon
+if %npc% EQU 4 set npctype=Mage
+if %npc% EQU 5 set npctype=Sorcerer
+if %npc% EQU 6 set npctype=Human
+if %npc% EQU 7 set npctype=Farmer
+if %npc% EQU 8 set npctype=Bear
+if %npc% EQU 9 set npctype=Rockbeast
+if %npc% EQU 10 set npctype=Ent
+if %npc% EQU 11 set npctype=thief
+if %npc% EQU 12 set npctype=Elemental
+if %npc% EQU 13 set npctype=Rat
+if %npc% EQU 14 set npctype=Madman
+if %npc% EQU 15 set npctype=Wort
+if %npc% EQU 16 set npctype=Skeleton
+if %npc% EQU 17 set npctype=Succubus
+if %npc% EQU 18 set npctype=Ghost
+if %npc% EQU 19 set npctype=Scorpion
+if %npc% EQU 20 set npctype=Eagle
+if %npc% EQU 21 set npctype=Mutant
+if %npc% EQU 22 set npctype=Cow
+if %npc% EQU 23 set npctype=Unicorn
+if %npc% EQU 24 set npctype=Shadow
+if %npc% EQU 25 set npctype=Legend
+if %npc% EQU 26 set npctype=Ectoplasm
+goto :eof
+
 :player_turn
+cls
+call :print_health_status
+echo What would you like to do?
+echo.
+echo 1) Attack^^!
+echo 2) Inventory
+echo 3) Flee^^!
+echo.
+set /p atkcho=
+if %atkcho% EQU 1 call :player_attack
+if %atkcho% EQU 2 goto fightinginventory
+if %atkcho% EQU 3 goto flee
+goto :eof
+
+
+:player_attack
+call :set_damage
+cls
+call :print_health_status
+echo You attack^^!
+echo.
+ping localhost -n 2 >nul
+set /a atkxp=((%damage%/4)*3)
+set /a playerxp=%playerxp%+%atkxp%
+set /a xpuntil=%xpuntil%-%atkxp%
+set /a health=%health% - %damage%
+echo You deal %damage% damage to the %npctype%^^!
+echo.
+echo It now has %health% health left.
+echo.
+echo You gain %atkxp% EXP.
+pause>nul
+if %curlvl% GEQ 37 set /a xpuntil=1
+if %playerxp% GEQ 1000000 set /a playerxp=1000000
+if %health% LEQ 0 goto checkiflvlup
+if %xpuntil% LEQ 0 set destination=fs3
+if %xpuntil% LEQ 0 goto levelup
+if %petowner% EQU 1 goto Patk
+goto :eof
+
+:npc_turn
+call :determine_resistant_damage dmgnpc
+cls
+call :print_health_status
+echo The %npctype% attacks.
+echo.
+ping localhost -n 2 >nul
+echo The %npctype% deals %dmgnpc% damage to you.
+set /a hp=%hp% - %dmgnpc%
+echo.
+echo You now have %hp% health left.
+call :lost_all_health? HOME
+pause>nul
+goto :eof
 
 
 :fight_gateway
-set fight_routine = %1
+set fight_routine=%1
 cls
 echo.
 ping localhost -n 2 >nul
 echo You encounter a level %level% %npctype%.
 ping localhost -n 2 >nul
-goto fight_routine
-
-:set_battle_variables
+goto %fight_routine%
 
 :set_damage
 if %swordtype% EQU Your set /a damage=%random%*50/32767+1
@@ -13280,7 +13218,18 @@ echo.
 echo.
 goto :eof
 
+:battle
+call :player_turn
+call :player_attack
+call :npc_turn
+goto battle
 
+:initiate_battle
+call :picknpc
+call :set_battle_variables
+call :fight_gateway battle
+
+::
 
 
 :: Routines for handling user death
