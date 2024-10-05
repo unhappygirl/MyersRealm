@@ -2888,6 +2888,14 @@ pause
 call :die "You died from high fatigue." HOME
 
 :CASTLE
+if %loan% GTR 0 (
+    set /a currentStamp=%DOW%+%sseason%*16+%yyear%*80
+    set /a diff=!currentStamp!-%loansharktimestamp%
+    set /a difff=10-!diff!
+    set /a RandE=%random% %% !difff!
+    if !RandE! EQU 0 call :loanShark_check !diff!
+)
+
 set /a ttllvl=%Woodcuttinglvl%+%Cooklvl%+%Fishinglvl%+%Thievinglvl%+%Mininglvl%+%Smithinglvl%
 if %FATIGUE% GTR 99 GOTO DFATIGUE
 if %FATIGUE% GTR 90 GOTO D2FATIGUE
@@ -3806,12 +3814,42 @@ pause
 goto CASTLE
 
 
+:loanShark_check
+cls
+echo The loanshark approaches you.
+ping 192.0.2.0 -n 1 -w 2000 > nul
+echo.
+set /a diff=%1
+pause
+echo Loanshark: Do you remember me, %username1% ? You still have %loan% golds to pay me back^^!
+echo Loanshark: Hmmm... let's see...
+echo.
+ping 192.0.2.0 -n 1 -w 4000 > nul
+echo Loanshark: It has been %diff% days since I lended you some money.
+
+if %diff% GEQ 10 (
+    echo Loanshark: You should have paid me back in time...
+    echo You hear Loanshark's annoyed grunt while they drag you into jail...
+    pause>nil
+    goto JAIL
+
+)
+
+if %diff% GEQ 5 (
+    set /a difff=10-%diff%
+    echo Loanshark: I warn you. You have %difff% days to pay me back... or face the consequences.
+) else (
+    set /a difff=10-%diff%
+    echo Loanshark: You have %difff% days to pay me back. 
+)
+pause
+goto :eof
+
+
+
 :Bank_Loan
 set /a FATIGUE=%FATIGUE%+1
 cls
-if %loan% LEQ 0 set Loan_Timer=0
-if %Loan_Timer% GEQ 1 set /a Loan_Timer=%Loan_Timer%-1
-if %Loan_Timer%==0 set /a Money=%Money%-%loan% & set loan=0
 cls
 echo.
 echo Loanshark: Get what you need done quickly.
@@ -3830,14 +3868,37 @@ if %Bank_Choice_2%==3 goto CASTLE
 goto Bank_Loan
 :Bank_Loan1
 cls
+if %loan% EQU 0 echo You don't have any debts^^! & pause & goto Bank_Loan
+set extra=0
 echo.
 echo Loanshark: How many loans would you like to pay?
 set /p Pay_Amount=
-if %Pay_Amount% GEQ %loan% set /a loan=%loan%-%money% & set money=0 & goto CASTLE
-set /a loan=%loan%-%Pay_Amount% & set /a money=%money%-%Pay_Amount%
+if %Pay_Amount% LEQ 100 (
+    if %Pay_Amount% NEQ %loan% ( 
+        echo Loanshark: Do I look like a beggar? Find at least 100 gold to start paying your debt^^! 
+        pause>nul 
+        goto CASTLE
+    )
+)
+if %Pay_Amount% GEQ %loan% (
+    set /a extra=%Pay_Amount%-%loan%
+    echo Loanshark: you are generous %username1% but I don't need your money! 
+    echo The Loanshark gives your extra !extra! golds back.
+    echo.
+    pause>nul
+) 
+set /a loan=%loan%-%Pay_Amount%+%extra% & set /a money=%money%-%Pay_Amount%+%extra%
 if %loan% LEQ -1 set /a money=%money%-%loan%
 if %loan% GEQ 1 set /a loan=%loan%-1
+if %loan% EQU 0 (
+    echo Loanshark: Pleasure doing business with you, %username1%.
+    echo Your debt is now fully paid.
+) else (
+    echo Loanshark: This is fine, however you still have %loan% golds to pay me.
+)
+pause
 goto CASTLE
+
 :Bank_Loan2
 cls
 if %loan% GEQ 1 goto Loan_Error
@@ -3845,8 +3906,20 @@ cls
 echo.
 echo Loanshark: How many loans would you like to take?
 set /p loan=
-set /a money=%money%+%loan% & set Loan_Timer=241
+::Why loan + 1?
+echo loanshark: Here are your %loan% gold(s).
+if %loan% GEQ 3000 (
+    echo Loanshark: Are you sure you will be able to pay this?
+) else if %loan% GEQ 100 (
+    echo Loanshark: A fine sum eh? Spend it wisely^^!
+) else (
+    echo Loanshark: You sure you don't need more?
+)
+echo.
+echo Loanshark: you have 10 days to pay me back %username1%, remember that.
+pause
 set /a loan=%loan%+1
+set /a loansharktimestamp=%DOW%+%sseason%*16+%yyear%*80
 cls
 goto CASTLE
 
@@ -3856,8 +3929,8 @@ set /a money=%money%+1
 goto Game Code Menu
 :Loan_Error
 echo.
-echo Loanshark: You need to pay back %loan% gold first.
-echo Pay your current loan to get a new loan.
+echo Loanshark: You need to pay back %loan% gold first, %username1%.
+echo Pay your current loan to get a new loan!
 pause>nul
 goto CASTLE
 
